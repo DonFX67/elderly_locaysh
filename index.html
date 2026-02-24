@@ -31,13 +31,9 @@ window.addEventListener('load', function() {
         mapLink.href = `https://www.google.com/maps?q=${lat},${lon}`;
         mapLink.style.display = 'block';
 
-        // Send coordinates to Google Form
-        const formURL = 'https://docs.google.com/forms/d/e/1FAIpQLScBdVB-l7ldN9pc4PVjLcxMppZnzfaxCrjv56mgorYTlTkCMA/formResponse';
-        const params = new URLSearchParams();
-        params.append('entry.872718696', lat);       // Latitude
-        params.append('entry.1974594568', lon);      // Longitude
-
-        fetch(`${formURL}?${params}`, { method: 'POST', mode: 'no-cors' });
+        // Send coordinates to Google Apps Script
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwqcR5-IjU5y6pyn2D9wB235RdJ6-kojZj0q_Sd18mP8ifTxh76-i133wypG-gbfUHm/exec';
+        fetch(`${scriptURL}?lat=${lat}&lon=${lon}`, { method: 'POST', mode: 'no-cors' });
       },
       function(error) {
         if(error.code === 1) {
